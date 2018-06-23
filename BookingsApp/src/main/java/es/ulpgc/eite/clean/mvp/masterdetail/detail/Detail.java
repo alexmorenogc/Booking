@@ -5,10 +5,6 @@ import es.ulpgc.eite.clean.mvp.Model;
 import es.ulpgc.eite.clean.mvp.Presenter;
 import es.ulpgc.eite.clean.mvp.masterdetail.app.ModelItem;
 
-/**
- * Created by Luis on 12/11/16.
- */
-
 public interface Detail {
 
   /**

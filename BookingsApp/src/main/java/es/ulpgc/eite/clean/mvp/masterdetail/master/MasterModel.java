@@ -3,23 +3,31 @@ package es.ulpgc.eite.clean.mvp.masterdetail.master;
 import android.os.Handler;
 import android.util.Log;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import es.ulpgc.eite.clean.mvp.GenericModel;
 import es.ulpgc.eite.clean.mvp.masterdetail.app.ModelItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.Shop;
 
 
 public class MasterModel
     extends GenericModel<Master.ModelToPresenter> implements Master.PresenterToModel {
 
-  private static final int ITEM_COUNT = 109;
-
-  // An array of items.
   public List<ModelItem> items = null;
   private boolean runningTask;
   private String errorMsg;
 
+  private DatabaseReference connection;
+  private FirebaseDatabase database;
 
   /**
    * Method that recovers a reference to the PRESENTER
@@ -33,6 +41,11 @@ public class MasterModel
     Log.d(TAG, "calling onCreate()");
 
     errorMsg = "Error deleting item!";
+
+    // Conectar con la BBDD
+    database = FirebaseDatabase.getInstance();
+    // Generar una referencia con la que conectar.
+    connection = database.getReference();
   }
 
   /**
@@ -101,7 +114,8 @@ public class MasterModel
   }
 
   private ModelItem createItem(int position) {
-    return new ModelItem(String.valueOf(position), "Item " + position, makeDetails(position));
+    // TODO: 23/6/18 Hacer crear item 
+    return null;
   }
 
   private String makeDetails(int position) {
@@ -113,12 +127,11 @@ public class MasterModel
     return builder.toString();
   }
 
-  private void setItems(){
-    items = new ArrayList();
-
-    // Add some sample items.
-    for (int count = 1; count <= ITEM_COUNT; count++) {
-      addItem(createItem(count));
+  private void setItems(ArrayList<Shop> query){
+    this.items = new ArrayList<>();
+    for (int i = 0; i < query.size(); i++){
+      ModelItem item = new ModelItem(query.get(i));
+      items.add(item);
     }
   }
 
@@ -132,15 +145,37 @@ public class MasterModel
     runningTask = true;
     getPresenter().onLoadItemsTaskStarted();
 
+    Query query = connection.child("shops");
+    query.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(DataSnapshot dataSnapshot) {
+        GenericTypeIndicator<ArrayList<Shop>> indicator = new GenericTypeIndicator<ArrayList<Shop>>() { };
+        ArrayList<Shop> shopList = dataSnapshot.getValue(indicator);
+        if (!shopList.isEmpty()) {
+          setItems(shopList);
+          runningTask = false;
+          getPresenter().onLoadItemsTaskFinished(items);
+        } else {
+          getPresenter().onLoadItemsTaskFinished(null);
+        }
+      }
+
+      @Override
+      public void onCancelled(DatabaseError databaseError) {
+
+      }
+    });
+    /*
     // Mock Hello: A handler to delay the answer
     new Handler().postDelayed(new Runnable() {
       @Override
       public void run() {
-        setItems();
+        //setItems();
         runningTask = false;
         getPresenter().onLoadItemsTaskFinished(items);
       }
-    }, 5000);
+    }, 1000);
+    */
   }
 
 }

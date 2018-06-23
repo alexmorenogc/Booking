@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "275537199512",
+    "firebase_url": "https://cashconverters-a3199.firebaseio.com",
+    "project_id": "cashconverters-a3199",
+    "storage_bucket": "cashconverters-a3199.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:275537199512:android:dd38a6e781e9f023",
+        "android_client_info": {
+          "package_name": "es.ulpgc.eite.clean.mvp.masterdetail"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "275537199512-7uukt0q31dr5fqjd8tnufka9u6dk4f8v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVBYl7h4fNVYp5qAu_tVSm-6rywdIrl7M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:275537199512:android:600be9e81c2d42e2",
+        "android_client_info": {
+          "package_name": "es.ulpgc.eite.clean.mvp.sample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "275537199512-7uukt0q31dr5fqjd8tnufka9u6dk4f8v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVBYl7h4fNVYp5qAu_tVSm-6rywdIrl7M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

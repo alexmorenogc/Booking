@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Bookings</string>
+    <string name="title_screen_detail">Booking Details</string>
+    <string name="title_screen_master">Booking List</string>
+    <string name="title_item_list">Booking List</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_restore">Restore</string>
+</resources>

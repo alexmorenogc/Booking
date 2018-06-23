@@ -23,11 +23,6 @@
             android:label="@string/title_screen_detail"
             android:parentActivityName=".master.MasterView"
             android:theme="@style/AppTheme.NoActionBar">
-            <!--
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="es.ulpgc.eite.clean.mvp.masterdetail.master.MasterView"/>
-            -->
         </activity>
     </application>
 

@@ -8,8 +8,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/BookingsApp" />
             <option value="$PROJECT_DIR$/CleanMvpLib" />
-            <option value="$PROJECT_DIR$/MasterDetailApp" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
