@@ -6,8 +6,9 @@ import android.util.Log;
 import es.ulpgc.eite.clean.mvp.ContextView;
 import es.ulpgc.eite.clean.mvp.GenericActivity;
 import es.ulpgc.eite.clean.mvp.GenericPresenter;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.Item;
 import es.ulpgc.eite.clean.mvp.masterdetail.app.Mediator;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.ModelItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.ShopItem;
 
 public class DetailPresenter extends GenericPresenter
       <Detail.PresenterToView, Detail.PresenterToModel, Detail.ModelToPresenter, DetailModel>
@@ -96,7 +97,7 @@ public class DetailPresenter extends GenericPresenter
    * @return item a ser eliminado de la lista del maestro
    */
   @Override
-  public ModelItem getItem() {
+  public Item getItem() {
     return getModel().getItem();
   }
 
@@ -136,7 +137,7 @@ public class DetailPresenter extends GenericPresenter
    * @param item seleccionado al hacer click en la lista del maestro
    */
   @Override
-  public void setItem(ModelItem item) {
+  public void setItem(Item item) {
     getModel().setItem(item);
   }
 
@@ -165,7 +166,7 @@ public class DetailPresenter extends GenericPresenter
    * @return item a borrar de la lista en el maestro
    */
   @Override
-  public ModelItem getItemToDelete() {
+  public Item getItemToDelete() {
     return getModel().getItem();
   }
 

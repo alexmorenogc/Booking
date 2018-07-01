@@ -1,6 +1,5 @@
 package es.ulpgc.eite.clean.mvp.masterdetail.master;
 
-import android.os.Handler;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -15,14 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.ulpgc.eite.clean.mvp.GenericModel;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.ModelItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.Item;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.ShopItem;
 import es.ulpgc.eite.clean.mvp.masterdetail.app.Shop;
 
 
 public class MasterModel
     extends GenericModel<Master.ModelToPresenter> implements Master.PresenterToModel {
 
-  public List<ModelItem> items = null;
+  public List<Item> items = null;
   private boolean runningTask;
   private String errorMsg;
 
@@ -71,7 +71,7 @@ public class MasterModel
   @Override
   public void loadItems() {
     if(items == null && !runningTask) {
-      startDelayedTask();
+      queryOnDatabase();
     } else {
       if(!runningTask){
         getPresenter().onLoadItemsTaskFinished(items);
@@ -83,7 +83,7 @@ public class MasterModel
 
 
   @Override
-  public void deleteItem(ModelItem item) {
+  public void deleteItem(Item item) {
     if (items.contains(item)){
       items.remove(item);
     } else {
@@ -109,11 +109,11 @@ public class MasterModel
   /////////////////////////////////////////////////////////////////////////////////////
 
 
-  private void addItem(ModelItem item) {
+  private void addItem(Item item) {
     items.add(item);
   }
 
-  private ModelItem createItem(int position) {
+  private Item createItem(int position) {
     // TODO: 23/6/18 Hacer crear item 
     return null;
   }
@@ -130,18 +130,13 @@ public class MasterModel
   private void setItems(ArrayList<Shop> query){
     this.items = new ArrayList<>();
     for (int i = 0; i < query.size(); i++){
-      ModelItem item = new ModelItem(query.get(i));
+      ShopItem item = new ShopItem(query.get(i));
       items.add(item);
     }
   }
 
-  /**
-   * Llamado para recuperar los elementos a mostrar en la lista.
-   * Consiste en una tarea asíncrona que retrasa un tiempo la obtención del contenido.
-   * El modelo notificará al presentador cuando se inicia y cuando finaliza esta tarea.
-   */
-  private void startDelayedTask() {
-    Log.d(TAG, "calling startDelayedTask()");
+  private void queryOnDatabase() {
+    Log.d(TAG, "calling queryOnDatabase()");
     runningTask = true;
     getPresenter().onLoadItemsTaskStarted();
 
@@ -165,17 +160,6 @@ public class MasterModel
 
       }
     });
-    /*
-    // Mock Hello: A handler to delay the answer
-    new Handler().postDelayed(new Runnable() {
-      @Override
-      public void run() {
-        //setItems();
-        runningTask = false;
-        getPresenter().onLoadItemsTaskFinished(items);
-      }
-    }, 1000);
-    */
   }
 
 }

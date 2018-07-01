@@ -14,7 +14,10 @@ import android.widget.TextView;
 
 import es.ulpgc.eite.clean.mvp.GenericActivity;
 import es.ulpgc.eite.clean.mvp.masterdetail.R;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.ModelItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.Booking;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.BookingItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.Item;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.ShopItem;
 import es.ulpgc.eite.clean.mvp.masterdetail.master.MasterView;
 
 /**
@@ -27,7 +30,7 @@ public class DetailView
     extends GenericActivity<Detail.PresenterToView, Detail.ViewToPresenter, DetailPresenter>
     implements Detail.PresenterToView {
 
-  private ModelItem item;
+  private Item item;
   private Toolbar toolbar;
   private CollapsingToolbarLayout toolbarLayout;
   private AppBarLayout appbarLayout;
@@ -68,11 +71,16 @@ public class DetailView
       toolbarLayout.setTitle(item.getContent());
     }
 
-    // Show the dummy content as text in a TextView.
     if (item != null) {
-      ((TextView) findViewById(R.id.item_detail)).setText(item.getDetails());
+      // Comprobamos el tipo de item, y mostramos en base al objeto obtenido.
+      if (item instanceof ShopItem) {
+        ShopItem detailItem = (ShopItem) item;
+        ((TextView) findViewById(R.id.item_detail)).setText(detailItem.getDetails());
+      } else if (item instanceof BookingItem) {
+        BookingItem detailItem = (BookingItem) item;
+        ((TextView) findViewById(R.id.item_detail)).setText(detailItem.getDetails());
+      }
     }
-
   }
 
   @Override

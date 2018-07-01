@@ -10,8 +10,9 @@ import java.util.List;
 import es.ulpgc.eite.clean.mvp.ContextView;
 import es.ulpgc.eite.clean.mvp.GenericActivity;
 import es.ulpgc.eite.clean.mvp.GenericPresenter;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.Item;
 import es.ulpgc.eite.clean.mvp.masterdetail.app.Mediator;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.ModelItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.ShopItem;
 
 
 public class MasterPresenter extends GenericPresenter
@@ -21,8 +22,8 @@ public class MasterPresenter extends GenericPresenter
 
 
   private boolean hideToolbar;
-  private ModelItem selectedItem;
-  private ModelItem itemToDelete;
+  private Item selectedItem;
+  private Item itemToDelete;
   private boolean hideProgress;
 
   /**
@@ -110,7 +111,7 @@ public class MasterPresenter extends GenericPresenter
    * @return item seleccionado en la lista al hacer click
    */
   @Override
-  public ModelItem getSelectedItem() {
+  public Item getSelectedItem() {
     return selectedItem;
   }
 
@@ -125,7 +126,7 @@ public class MasterPresenter extends GenericPresenter
 
 
   @Override
-  public void onErrorDeletingItem(ModelItem item) {
+  public void onErrorDeletingItem(Item item) {
     Log.d(TAG, "calling onErrorDeletingItem()");
 
     if(isViewRunning()) {
@@ -139,7 +140,7 @@ public class MasterPresenter extends GenericPresenter
    * @param items como contenido de la lista a mostrar en pantalla
    */
   @Override
-  public void onLoadItemsTaskFinished(List<ModelItem> items) {
+  public void onLoadItemsTaskFinished(List<Item> items) {
     Log.d(TAG, "calling onLoadItemsTaskFinished()");
 
     // Una vez finaliza la tarea para la obtención del contenido de la lista,
@@ -190,7 +191,7 @@ public class MasterPresenter extends GenericPresenter
    * @param item a borrar de la lista
    */
   @Override
-  public void setItemToDelete(ModelItem item) {
+  public void setItemToDelete(Item item) {
     itemToDelete = item;
   }
 
@@ -230,7 +231,7 @@ public class MasterPresenter extends GenericPresenter
    * @param item seleccionado en la lista al hacer click
    */
   @Override
-  public void onItemClicked(ModelItem item) {
+  public void onItemClicked(Item item) {
     Log.d(TAG, "calling onItemClicked()");
 
     selectedItem = item;

@@ -20,11 +20,9 @@ import java.util.List;
 
 import es.ulpgc.eite.clean.mvp.GenericActivity;
 import es.ulpgc.eite.clean.mvp.masterdetail.R;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.ModelItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.Item;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.ShopItem;
 
-/**
- * An activity representing a list of Items.
- */
 public class MasterView
     extends GenericActivity<Master.PresenterToView, Master.ViewToPresenter, MasterPresenter>
     implements Master.PresenterToView {
@@ -124,7 +122,7 @@ public class MasterView
   }
 
   @Override
-  public void setRecyclerAdapterContent(List<ModelItem> items) {
+  public void setRecyclerAdapterContent(List<Item> items) {
     Log.d(TAG, "calling setRecyclerAdapterContent()");
 
     if(recyclerView != null) {
@@ -141,13 +139,13 @@ public class MasterView
   private class ModelItemRecyclerViewAdapter
       extends RecyclerView.Adapter<ModelItemRecyclerViewAdapter.ViewHolder> {
 
-    private List<ModelItem> items;
+    private List<Item> items;
 
     public ModelItemRecyclerViewAdapter() {
       items = new ArrayList<>();
     }
 
-    public void setItemList(List<ModelItem> items) {
+    public void setItemList(List<Item> items) {
       this.items = items;
       notifyDataSetChanged();
     }
@@ -158,10 +156,6 @@ public class MasterView
       LayoutInflater inflater = LayoutInflater.from(parent.getContext());
       View view = inflater.inflate(R.layout.item_list_viewholder, parent, false);
 
-      /*
-      View view = LayoutInflater.from(parent.getContext())
-          .inflate(R.layout.item_list_content, parent, false);
-      */
       return new ViewHolder(view);
     }
 
@@ -185,7 +179,7 @@ public class MasterView
     public class ViewHolder extends RecyclerView.ViewHolder {
       public final View itemView;
       public final TextView contentView;
-      public ModelItem item;
+      public Item item;
 
       public ViewHolder(View view) {
         super(view);

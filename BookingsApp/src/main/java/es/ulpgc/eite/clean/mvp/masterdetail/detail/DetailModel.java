@@ -3,13 +3,14 @@ package es.ulpgc.eite.clean.mvp.masterdetail.detail;
 import android.util.Log;
 
 import es.ulpgc.eite.clean.mvp.GenericModel;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.ModelItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.Item;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.ShopItem;
 
 
 public class DetailModel
     extends GenericModel<Detail.ModelToPresenter> implements Detail.PresenterToModel {
 
-  private ModelItem item;
+  private Item item;
 
   /**
    * Method that recovers a reference to the PRESENTER
@@ -38,12 +39,12 @@ public class DetailModel
   // Presenter To Model //////////////////////////////////////////////////////////////
 
   @Override
-  public ModelItem getItem() {
+  public Item getItem() {
     return item;
   }
 
   @Override
-  public void setItem(ModelItem item) {
+  public void setItem(Item item) {
     this.item = item;
   }
 

@@ -143,7 +143,7 @@ public class MediatorApp extends Application implements Mediator.Lifecycle, Medi
    * Estado a actualizar en el maestro en función de la ejecución del detalle
    */
   private class ListState {
-    ModelItem itemToDelete;
+    Item itemToDelete;
   }
 
   /**
@@ -151,7 +151,7 @@ public class MediatorApp extends Application implements Mediator.Lifecycle, Medi
    */
   private class DetailState {
     boolean hideToolbar;
-    ModelItem selectedItem;
+    Item selectedItem;
   }
 
   /**

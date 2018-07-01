@@ -8,7 +8,8 @@ import java.util.List;
 import es.ulpgc.eite.clean.mvp.ContextView;
 import es.ulpgc.eite.clean.mvp.Model;
 import es.ulpgc.eite.clean.mvp.Presenter;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.ModelItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.Item;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.ShopItem;
 
 public interface Master {
 
@@ -26,7 +27,7 @@ public interface Master {
    */
   interface MasterToDetail {
     Context getManagedContext();
-    ModelItem getSelectedItem();
+    Item getSelectedItem();
     boolean getToolbarVisibility();
   }
 
@@ -36,7 +37,7 @@ public interface Master {
    */
   interface DetailToMaster {
     void onScreenResumed();
-    void setItemToDelete(ModelItem item);
+    void setItemToDelete(Item item);
   }
 
 
@@ -47,7 +48,7 @@ public interface Master {
    * Methods offered to VIEW to communicate with PRESENTER
    */
   interface ViewToPresenter extends Presenter<PresenterToView> {
-    void onItemClicked(ModelItem item);
+    void onItemClicked(Item item);
     void onRestoreActionClicked();
     void onResumingContent();
   }
@@ -60,14 +61,14 @@ public interface Master {
     void hideToolbar();
     void showError(String msg);
     void showProgress();
-    void setRecyclerAdapterContent(List<ModelItem> items);
+    void setRecyclerAdapterContent(List<Item> items);
   }
 
   /**
    * Methods offered to MODEL to communicate with PRESENTER
    */
   interface PresenterToModel extends Model<ModelToPresenter> {
-    void deleteItem(ModelItem item);
+    void deleteItem(Item item);
     void loadItems();
     void reloadItems();
     String getErrorMessage();
@@ -77,8 +78,8 @@ public interface Master {
    * Required PRESENTER methods available to MODEL
    */
   interface ModelToPresenter {
-    void onErrorDeletingItem(ModelItem item);
-    void onLoadItemsTaskFinished(List<ModelItem> items);
+    void onErrorDeletingItem(Item item);
+    void onLoadItemsTaskFinished(List<Item> items);
     void onLoadItemsTaskStarted();
   }
 

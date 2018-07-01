@@ -3,7 +3,8 @@ package es.ulpgc.eite.clean.mvp.masterdetail.detail;
 import es.ulpgc.eite.clean.mvp.ContextView;
 import es.ulpgc.eite.clean.mvp.Model;
 import es.ulpgc.eite.clean.mvp.Presenter;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.ModelItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.Item;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.ShopItem;
 
 public interface Detail {
 
@@ -14,7 +15,7 @@ public interface Detail {
   interface MasterToDetail {
     void onScreenStarted();
     void setToolbarVisibility(boolean visible);
-    void setItem(ModelItem item);
+    void setItem(Item item);
   }
 
   /**
@@ -24,7 +25,7 @@ public interface Detail {
    */
   interface DetailToMaster {
     void destroyView();
-    ModelItem getItemToDelete();
+    Item getItemToDelete();
   }
 
   /////////////////////////////////////////////////////////////////////////////////////
@@ -34,7 +35,7 @@ public interface Detail {
    * Methods offered to VIEW to communicate with PRESENTER
    */
   interface ViewToPresenter extends Presenter<PresenterToView> {
-    ModelItem getItem();
+    Item getItem();
     void onDeleteActionClicked();
   }
 
@@ -50,8 +51,8 @@ public interface Detail {
    * Methods offered to MODEL to communicate with PRESENTER
    */
   interface PresenterToModel extends Model<ModelToPresenter> {
-    ModelItem getItem();
-    void setItem(ModelItem item);
+    Item getItem();
+    void setItem(Item item);
   }
 
   /**

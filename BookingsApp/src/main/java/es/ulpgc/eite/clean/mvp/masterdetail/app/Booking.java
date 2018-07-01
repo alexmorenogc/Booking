@@ -1,6 +1,7 @@
 package es.ulpgc.eite.clean.mvp.masterdetail.app;
 
 public class Booking {
+    private int id;
     private int shopId;
     private String name;
     private String mail;
@@ -20,6 +21,14 @@ public class Booking {
     }
 
     public Booking() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getShopId() {
