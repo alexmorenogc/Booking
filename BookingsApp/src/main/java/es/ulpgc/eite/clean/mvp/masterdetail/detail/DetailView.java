@@ -14,10 +14,9 @@ import android.widget.TextView;
 
 import es.ulpgc.eite.clean.mvp.GenericActivity;
 import es.ulpgc.eite.clean.mvp.masterdetail.R;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.Booking;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.BookingItem;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.Item;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.ShopItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.data.BookingItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.data.Item;
+import es.ulpgc.eite.clean.mvp.masterdetail.data.ShopItem;
 import es.ulpgc.eite.clean.mvp.masterdetail.master.MasterView;
 
 /**

@@ -20,8 +20,8 @@ import java.util.List;
 
 import es.ulpgc.eite.clean.mvp.GenericActivity;
 import es.ulpgc.eite.clean.mvp.masterdetail.R;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.Item;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.ShopItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.data.BookingItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.data.Item;
 
 public class MasterView
     extends GenericActivity<Master.PresenterToView, Master.ViewToPresenter, MasterPresenter>
@@ -65,7 +65,8 @@ public class MasterView
 
   @Override
   public void onBackPressed() {
-    super.onBackPressed();
+    //super.onBackPressed();
+    getPresenter().onBackPressed();
     Log.d(TAG, "calling onBackPressed()");
   }
 
@@ -128,7 +129,9 @@ public class MasterView
     if(recyclerView != null) {
       ModelItemRecyclerViewAdapter recyclerAdapter =
           (ModelItemRecyclerViewAdapter) recyclerView.getAdapter();
-      recyclerAdapter.setItemList(items);
+      if (items != null) {
+        recyclerAdapter.setItemList(items);
+      }
     }
   }
 
@@ -173,7 +176,10 @@ public class MasterView
 
     @Override
     public int getItemCount() {
-      return items.size();
+      if (items != null){
+        return items.size();
+      }
+      return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

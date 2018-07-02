@@ -6,9 +6,8 @@ import android.util.Log;
 import es.ulpgc.eite.clean.mvp.ContextView;
 import es.ulpgc.eite.clean.mvp.GenericActivity;
 import es.ulpgc.eite.clean.mvp.GenericPresenter;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.Item;
+import es.ulpgc.eite.clean.mvp.masterdetail.data.Item;
 import es.ulpgc.eite.clean.mvp.masterdetail.app.Mediator;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.ShopItem;
 
 public class DetailPresenter extends GenericPresenter
       <Detail.PresenterToView, Detail.PresenterToModel, Detail.ModelToPresenter, DetailModel>

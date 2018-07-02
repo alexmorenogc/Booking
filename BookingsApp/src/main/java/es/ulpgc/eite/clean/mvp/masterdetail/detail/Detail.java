@@ -3,8 +3,7 @@ package es.ulpgc.eite.clean.mvp.masterdetail.detail;
 import es.ulpgc.eite.clean.mvp.ContextView;
 import es.ulpgc.eite.clean.mvp.Model;
 import es.ulpgc.eite.clean.mvp.Presenter;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.Item;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.ShopItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.data.Item;
 
 public interface Detail {
 

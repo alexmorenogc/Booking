@@ -8,8 +8,7 @@ import java.util.List;
 import es.ulpgc.eite.clean.mvp.ContextView;
 import es.ulpgc.eite.clean.mvp.Model;
 import es.ulpgc.eite.clean.mvp.Presenter;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.Item;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.ShopItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.data.Item;
 
 public interface Master {
 
@@ -72,6 +71,9 @@ public interface Master {
     void loadItems();
     void reloadItems();
     String getErrorMessage();
+    void onShopClickedLoadBookings(int id);
+    boolean isBookingListReady();
+    void setBookingListReady(boolean b);
   }
 
   /**

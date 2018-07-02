@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import es.ulpgc.eite.clean.mvp.masterdetail.data.Item;
 import es.ulpgc.eite.clean.mvp.masterdetail.detail.Detail;
 import es.ulpgc.eite.clean.mvp.masterdetail.detail.DetailView;
 import es.ulpgc.eite.clean.mvp.masterdetail.master.Master;

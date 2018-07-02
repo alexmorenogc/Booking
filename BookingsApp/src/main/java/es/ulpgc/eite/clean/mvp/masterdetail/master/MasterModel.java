@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.ulpgc.eite.clean.mvp.GenericModel;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.Item;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.ShopItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.app.Booking;
+import es.ulpgc.eite.clean.mvp.masterdetail.data.BookingItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.data.Item;
+import es.ulpgc.eite.clean.mvp.masterdetail.data.ShopItem;
 import es.ulpgc.eite.clean.mvp.masterdetail.app.Shop;
 
 
@@ -23,8 +25,10 @@ public class MasterModel
     extends GenericModel<Master.ModelToPresenter> implements Master.PresenterToModel {
 
   public List<Item> items = null;
-  private boolean runningTask;
+  public List<Item> bookingItems = null;
+  private boolean runningTask, isRunningTaskBookingList;
   private String errorMsg;
+  private boolean bookingListReady = false;
 
   private DatabaseReference connection;
   private FirebaseDatabase database;
@@ -98,12 +102,76 @@ public class MasterModel
   @Override
   public void reloadItems() {
     items = null;
+    bookingItems = null;
     loadItems();
   }
 
   @Override
   public String getErrorMessage() {
     return errorMsg;
+  }
+
+  @Override
+  public void onShopClickedLoadBookings(int id) {
+    if(bookingItems == null && !isRunningTaskBookingList) {
+      queryOnDatabaseBookingList(id);
+    } else {
+      if(!isRunningTaskBookingList){
+        getPresenter().onLoadItemsTaskFinished(bookingItems);
+      } else {
+        getPresenter().onLoadItemsTaskStarted();
+      }
+    }
+  }
+
+  @Override
+  public boolean isBookingListReady() {
+    return bookingListReady;
+  }
+
+  @Override
+  public void setBookingListReady(boolean b) {
+    bookingListReady = b;
+  }
+
+  private void queryOnDatabaseBookingList(int id) {
+    Log.d(TAG, "calling queryOnDatabaseBookingList()");
+    isRunningTaskBookingList = true;
+    getPresenter().onLoadItemsTaskStarted();
+
+    Query query = connection.child("booking").orderByChild("shopId").equalTo(id);
+    query.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(DataSnapshot dataSnapshot) {
+        if (dataSnapshot.exists()){
+          ArrayList<Booking> bookingList = new ArrayList<>();
+          for (DataSnapshot child: dataSnapshot.getChildren()) {
+            bookingList.add(child.getValue(Booking.class));
+          }
+          setBookingItems(bookingList);
+          bookingListReady = true;
+          isRunningTaskBookingList = false;
+          getPresenter().onLoadItemsTaskFinished(bookingItems);
+        } else {
+          bookingListReady = true;
+          isRunningTaskBookingList = false;
+          getPresenter().onLoadItemsTaskFinished(emptyBookingList());
+        }
+      }
+
+      @Override
+      public void onCancelled(DatabaseError databaseError) {
+
+      }
+    });
+  }
+
+  private List<Item> emptyBookingList() {
+    ArrayList<Item> emptyList = new ArrayList<>();
+    Booking empty = new Booking(-1,"No hay reservas","","","",-1,-1);
+    BookingItem emptyItem = new BookingItem(empty);
+    emptyList.add(emptyItem);
+    return emptyList;
   }
 
   /////////////////////////////////////////////////////////////////////////////////////
@@ -135,13 +203,21 @@ public class MasterModel
     }
   }
 
+  private void setBookingItems(ArrayList<Booking> query){
+    this.bookingItems = new ArrayList<>();
+    for (int i = 0; i < query.size(); i++){
+      BookingItem item = new BookingItem(query.get(i));
+      bookingItems.add(item);
+    }
+  }
+
   private void queryOnDatabase() {
     Log.d(TAG, "calling queryOnDatabase()");
     runningTask = true;
     getPresenter().onLoadItemsTaskStarted();
 
     Query query = connection.child("shops");
-    query.addValueEventListener(new ValueEventListener() {
+    query.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         GenericTypeIndicator<ArrayList<Shop>> indicator = new GenericTypeIndicator<ArrayList<Shop>>() { };
@@ -151,7 +227,8 @@ public class MasterModel
           runningTask = false;
           getPresenter().onLoadItemsTaskFinished(items);
         } else {
-          getPresenter().onLoadItemsTaskFinished(null);
+          runningTask = false;
+          getPresenter().onLoadItemsTaskFinished(emptyShopList());
         }
       }
 
@@ -160,6 +237,14 @@ public class MasterModel
 
       }
     });
+  }
+
+  private List<Item> emptyShopList() {
+    ArrayList<Item> emptyList = new ArrayList<>();
+    Shop empty = new Shop("No hay tiendas","",-1,"",-1,"","");
+    ShopItem emptyItem = new ShopItem(empty);
+    emptyList.add(emptyItem);
+    return emptyList;
   }
 
 }

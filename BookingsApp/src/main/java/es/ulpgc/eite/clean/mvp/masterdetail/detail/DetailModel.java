@@ -3,8 +3,7 @@ package es.ulpgc.eite.clean.mvp.masterdetail.detail;
 import android.util.Log;
 
 import es.ulpgc.eite.clean.mvp.GenericModel;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.Item;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.ShopItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.data.Item;
 
 
 public class DetailModel

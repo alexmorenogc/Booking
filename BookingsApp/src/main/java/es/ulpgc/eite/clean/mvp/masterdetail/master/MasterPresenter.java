@@ -3,6 +3,7 @@ package es.ulpgc.eite.clean.mvp.masterdetail.master;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import java.util.List;
@@ -10,9 +11,10 @@ import java.util.List;
 import es.ulpgc.eite.clean.mvp.ContextView;
 import es.ulpgc.eite.clean.mvp.GenericActivity;
 import es.ulpgc.eite.clean.mvp.GenericPresenter;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.Item;
+import es.ulpgc.eite.clean.mvp.masterdetail.data.BookingItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.data.Item;
 import es.ulpgc.eite.clean.mvp.masterdetail.app.Mediator;
-import es.ulpgc.eite.clean.mvp.masterdetail.app.ShopItem;
+import es.ulpgc.eite.clean.mvp.masterdetail.data.ShopItem;
 
 
 public class MasterPresenter extends GenericPresenter
@@ -71,6 +73,15 @@ public class MasterPresenter extends GenericPresenter
    */
   @Override
   public void onBackPressed() {
+    if (getModel().isBookingListReady()){
+      getModel().reloadItems();
+      getModel().setBookingListReady(false);
+    } else {
+      if (isViewRunning()){
+        // TODO: 2/7/18 Cerrar aplicación
+      }
+    }
+
     Log.d(TAG, "calling onBackPressed()");
   }
 
@@ -148,7 +159,9 @@ public class MasterPresenter extends GenericPresenter
     // y actualizamos el contenido de la lista
     hideProgress = true;
     checkVisibility();
-    getView().setRecyclerAdapterContent(items);
+    if (items != null){
+      getView().setRecyclerAdapterContent(items);
+    }
   }
 
   /**
@@ -181,6 +194,12 @@ public class MasterPresenter extends GenericPresenter
       Log.d(TAG, "calling deleteItem()");
       getModel().deleteItem(itemToDelete);
       itemToDelete = null;
+    }
+
+    if (getModel().isBookingListReady()){
+      //hideProgress = false;
+      //checkVisibility();
+      getModel().onShopClickedLoadBookings(selectedItem.getShopId());
     }
   }
 
@@ -234,15 +253,20 @@ public class MasterPresenter extends GenericPresenter
   public void onItemClicked(Item item) {
     Log.d(TAG, "calling onItemClicked()");
 
-    selectedItem = item;
+    if (item instanceof ShopItem){
+      // Al hacer click en una tienda se recargaran los datos con las reservas de esa tienda
+      Log.d(TAG, "onItemClicked: calling onShopClickedLoadBookings()");
+      selectedItem = item;
+      getModel().onShopClickedLoadBookings(item.getShopId());
 
-    // Al haber hecho click en uno de los elementos de la lista del maestro es necesario
-    // arrancar el detalle pasándole el estado inicial correspondiente que, en este caso,
-    // es el item seleccionado. Será el mediador quien se encargue de obtener este estado
-    // desde el maestro y pasarselo al detalle
-    Log.d(TAG, "calling goToDetailScreen()");
-    Mediator.Navigation mediator = (Mediator.Navigation) getView().getApplication();
-    mediator.goToDetailScreen(this);
+    } else if (item instanceof BookingItem){
+      selectedItem = item;
+
+      // Al hacer click en una reserva se tiene que cargar el detalle de la reserva
+      Log.d(TAG, "calling goToDetailScreen()");
+      Mediator.Navigation mediator = (Mediator.Navigation) getView().getApplication();
+      mediator.goToDetailScreen(this);
+    }
   }
 
 
