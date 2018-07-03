@@ -96,7 +96,7 @@ public class MasterModel
       bookingItems.remove(item);
       if (item instanceof BookingItem){
         BookingItem itemToDelete = (BookingItem) item;
-        connection.child("bookings").child(itemToDelete.getIdFirebase()).removeValue();
+        connection.child("booking").child(itemToDelete.getIdFirebase()).removeValue();
       }
     } else {
       getPresenter().onErrorDeletingItem(item);
@@ -206,6 +206,8 @@ public class MasterModel
   }
 
   private void setItems(ArrayList<Shop> query){
+    Log.d(TAG, "calling setItems");
+
     this.items = new ArrayList<>();
     for (int i = 0; i < query.size(); i++){
       ShopItem item = new ShopItem(query.get(i));
@@ -214,6 +216,8 @@ public class MasterModel
   }
 
   private void setBookingItems(ArrayList<Booking> query, ArrayList<String> names){
+    Log.d(TAG, "calling setBookingItems");
+
     this.bookingItems = new ArrayList<>();
     for (int i = 0; i < query.size(); i++){
       BookingItem item = new BookingItem(query.get(i),names.get(i));
