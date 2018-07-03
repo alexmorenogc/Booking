@@ -78,7 +78,11 @@ public class MasterModel
       queryOnDatabase();
     } else {
       if(!runningTask){
-        getPresenter().onLoadItemsTaskFinished(items);
+        if (bookingItems == null){
+          getPresenter().onLoadItemsTaskFinished(items);
+        } else {
+          getPresenter().onLoadItemsTaskFinished(bookingItems);
+        }
       } else {
         getPresenter().onLoadItemsTaskStarted();
       }
@@ -90,6 +94,10 @@ public class MasterModel
   public void deleteItem(Item item) {
     if (items.contains(item)){
       items.remove(item);
+      if (item instanceof BookingItem){
+        BookingItem itemToDelete = (BookingItem) item;
+        connection.child("bookings").child(itemToDelete.getIdFirebase()).removeValue();
+      }
     } else {
       getPresenter().onErrorDeletingItem(item);
     }
