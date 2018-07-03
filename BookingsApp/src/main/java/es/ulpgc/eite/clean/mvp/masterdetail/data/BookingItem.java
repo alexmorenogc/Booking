@@ -12,7 +12,12 @@ public class BookingItem implements Item {
   }
 
   public String getDetails() {
-    return "Name: " + item.getName() + "\n" + "Shop:" + item.getShopId() + "\n" + "Mail:" + item.getMail() + "\n";
+    return "Name: " + item.getName() + "\n" +
+            "Shop: " + item.getShopId() + "\n" +
+            "Mail: " + item.getMail() + "\n" +
+            "Date: " + item.getDate() + "\n" +
+            "Products: " + item.getProducts() + "\n" +
+            "ID: " + idFirebase + "\n";
   }
 
   public void setId(int id) { item.setId(id); }
@@ -22,7 +27,7 @@ public class BookingItem implements Item {
 
   public String getIdFirebase() { return idFirebase; }
 
-  public void setIdFirebase(String idFirebase) { this.idFirebase = idFirebase; }
+  public void setIdFirebase(String idFirebase) { this.idFirebase = idFirebase;  }
 
   public String getContent() {
     return item.getName();
