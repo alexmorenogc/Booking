@@ -92,11 +92,15 @@ public class MasterModel
 
   @Override
   public void deleteItem(Item item) {
-    if (bookingItems.contains(item)){
-      bookingItems.remove(item);
-      if (item instanceof BookingItem){
-        BookingItem itemToDelete = (BookingItem) item;
-        connection.child("booking").child(itemToDelete.getIdFirebase()).removeValue();
+    if (item != null) {
+      if (bookingItems.contains(item) && item.getShopId() != -1){
+          bookingItems.remove(item);
+          if (item instanceof BookingItem){
+            BookingItem itemToDelete = (BookingItem) item;
+            connection.child("booking").child(itemToDelete.getIdFirebase()).removeValue();
+          }
+      } else {
+        getPresenter().onErrorDeletingItem(item);
       }
     } else {
       getPresenter().onErrorDeletingItem(item);
