@@ -135,6 +135,11 @@ public class MasterView
     }
   }
 
+  @Override
+  public void finishScreen(){
+    finish();
+  }
+
 
   /////////////////////////////////////////////////////////////////////////////////////
 

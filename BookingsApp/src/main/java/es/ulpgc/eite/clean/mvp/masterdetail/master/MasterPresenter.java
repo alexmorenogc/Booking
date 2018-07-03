@@ -78,7 +78,7 @@ public class MasterPresenter extends GenericPresenter
       getModel().setBookingListReady(false);
     } else {
       if (isViewRunning()){
-        // TODO: 2/7/18 Cerrar aplicación
+        getView().finishScreen();
       }
     }
 

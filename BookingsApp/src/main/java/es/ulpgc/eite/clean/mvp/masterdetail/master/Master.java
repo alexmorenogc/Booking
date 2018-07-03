@@ -61,6 +61,7 @@ public interface Master {
     void showError(String msg);
     void showProgress();
     void setRecyclerAdapterContent(List<Item> items);
+    void finishScreen();
   }
 
   /**
