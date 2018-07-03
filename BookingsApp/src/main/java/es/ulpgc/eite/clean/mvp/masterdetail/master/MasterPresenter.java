@@ -22,7 +22,6 @@ public class MasterPresenter extends GenericPresenter
     implements Master.ViewToPresenter, Master.ModelToPresenter,
       Master.MasterToDetail, Master.ToMaster, Master.DetailToMaster {
 
-
   private boolean hideToolbar;
   private Item selectedItem;
   private Item itemToDelete;

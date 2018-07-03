@@ -89,12 +89,17 @@ public class MasterModel
     }
   }
 
-
+  /**
+   * Método que borra del arraylist el item y además también borra el item de Firebase.
+   * @param item a borrar
+   */
   @Override
   public void deleteItem(Item item) {
+    // Es posible tener null proque sólo borraremos si es necesario, sino, metemos null
     if (item != null) {
-      if (bookingItems.contains(item) && item.getShopId() != -1){
+      if (bookingItems.contains(item)){
           bookingItems.remove(item);
+          // Generamos un BookingItem si pertenece a esta y hacemos el borrado.
           if (item instanceof BookingItem){
             BookingItem itemToDelete = (BookingItem) item;
             connection.child("booking").child(itemToDelete.getIdFirebase()).removeValue();
@@ -123,6 +128,11 @@ public class MasterModel
     return errorMsg;
   }
 
+  /**
+   * Método que comprueba si hay array generado de los items de las reservas
+   * y si no lo hay ejecuta el método para obtenerlo con la id de la tienda
+   * @param id de la tienda a buscar
+   */
   @Override
   public void onShopClickedLoadBookings(int id) {
     if(bookingItems == null && !isRunningTaskBookingList) {
@@ -146,6 +156,11 @@ public class MasterModel
     bookingListReady = b;
   }
 
+  /**
+   * Método que genera el array con las reservas desde Firebase y manda al presentador
+   * el array con todas las reservas.
+   * @param id de la tienda a buscar
+   */
   private void queryOnDatabaseBookingList(int id) {
     Log.d(TAG, "calling queryOnDatabaseBookingList()");
     isRunningTaskBookingList = true;
@@ -180,6 +195,10 @@ public class MasterModel
     });
   }
 
+  /**
+   * Método privado para generar una lista vacía con el texto No hay reservas.
+   * @return lista vacía
+   */
   private List<Item> emptyBookingList() {
     ArrayList<Item> emptyList = new ArrayList<>();
     Booking empty = new Booking(-1,"No hay reservas","-","-","-",-1,-1);
@@ -191,15 +210,28 @@ public class MasterModel
   /////////////////////////////////////////////////////////////////////////////////////
 
 
+  /**
+   * Método en desuso para añadir items al arraylist
+   * @param item
+   */
   private void addItem(Item item) {
-    items.add(item);
+    //items.add(item);
   }
 
+  /**
+   * Método para crear un item en una posición en concreto.
+   * @param position
+   * @return
+   */
   private Item createItem(int position) {
-    // TODO: 23/6/18 Hacer crear item 
     return null;
   }
 
+  /**
+   * Método en desuso para generar los detalles un objeto.
+   * @param position
+   * @return
+   */
   private String makeDetails(int position) {
     StringBuilder builder = new StringBuilder();
     builder.append("Details about Item: ").append(position).append("\n");
@@ -209,26 +241,38 @@ public class MasterModel
     return builder.toString();
   }
 
-  private void setItems(ArrayList<Shop> query){
-    Log.d(TAG, "calling setItems");
+  /**
+   * Método privado para generar el ArrayList de items a partir de un ArrayList de tiendas
+   * @param shops ArrayList de tiendas
+   */
+  private void setShopItems(ArrayList<Shop> shops){
+    Log.d(TAG, "calling setShopItems");
 
     this.items = new ArrayList<>();
-    for (int i = 0; i < query.size(); i++){
-      ShopItem item = new ShopItem(query.get(i));
+    for (int i = 0; i < shops.size(); i++){
+      ShopItem item = new ShopItem(shops.get(i));
       items.add(item);
     }
   }
 
-  private void setBookingItems(ArrayList<Booking> query, ArrayList<String> names){
+  /**
+   * Método privado para generar el ArrayList de items a partir de un ArrayList de reservas
+   * @param bookings ArrayList de tiendas
+   * @param idsFirebase identificadores de Firebase
+   */
+  private void setBookingItems(ArrayList<Booking> bookings, ArrayList<String> idsFirebase){
     Log.d(TAG, "calling setBookingItems");
 
     this.bookingItems = new ArrayList<>();
-    for (int i = 0; i < query.size(); i++){
-      BookingItem item = new BookingItem(query.get(i),names.get(i));
+    for (int i = 0; i < bookings.size(); i++){
+      BookingItem item = new BookingItem(bookings.get(i),idsFirebase.get(i));
       bookingItems.add(item);
     }
   }
 
+  /**
+   * Método privado para obtener de Firebase la lista de tiendas
+   */
   private void queryOnDatabase() {
     Log.d(TAG, "calling queryOnDatabase()");
     runningTask = true;
@@ -241,7 +285,7 @@ public class MasterModel
         GenericTypeIndicator<ArrayList<Shop>> indicator = new GenericTypeIndicator<ArrayList<Shop>>() { };
         ArrayList<Shop> shopList = dataSnapshot.getValue(indicator);
         if (!shopList.isEmpty()) {
-          setItems(shopList);
+          setShopItems(shopList);
           runningTask = false;
           getPresenter().onLoadItemsTaskFinished(items);
         } else {
@@ -257,6 +301,10 @@ public class MasterModel
     });
   }
 
+  /**
+   * Método para generar ArrayList vacío de tiendas.
+   * @return ArrayList vacío
+   */
   private List<Item> emptyShopList() {
     ArrayList<Item> emptyList = new ArrayList<>();
     Shop empty = new Shop("No hay tiendas","",-1,"",-1,"","");

@@ -105,6 +105,7 @@ public class MediatorApp extends Application implements Mediator.Lifecycle, Medi
     if(detailToMasterState != null) {
       Log.d(TAG, "calling resumingMasterScreen()");
       Log.d(TAG, "calling restoringUpdatedMasterState()");
+      // Sólo se borra si no es un objeto metido para relleno
       if (detailToMasterState.itemToDelete.getShopId() != -1){
         presenter.setItemToDelete(detailToMasterState.itemToDelete);
       }
