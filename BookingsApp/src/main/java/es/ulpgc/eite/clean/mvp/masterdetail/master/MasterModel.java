@@ -145,10 +145,12 @@ public class MasterModel
       public void onDataChange(DataSnapshot dataSnapshot) {
         if (dataSnapshot.exists()){
           ArrayList<Booking> bookingList = new ArrayList<>();
+          ArrayList<String> bookingListNames = new ArrayList<>();
           for (DataSnapshot child: dataSnapshot.getChildren()) {
             bookingList.add(child.getValue(Booking.class));
+            bookingListNames.add(child.getKey());
           }
-          setBookingItems(bookingList);
+          setBookingItems(bookingList, bookingListNames);
           bookingListReady = true;
           isRunningTaskBookingList = false;
           getPresenter().onLoadItemsTaskFinished(bookingItems);
@@ -169,7 +171,7 @@ public class MasterModel
   private List<Item> emptyBookingList() {
     ArrayList<Item> emptyList = new ArrayList<>();
     Booking empty = new Booking(-1,"No hay reservas","","","",-1,-1);
-    BookingItem emptyItem = new BookingItem(empty);
+    BookingItem emptyItem = new BookingItem(empty,"vacio");
     emptyList.add(emptyItem);
     return emptyList;
   }
@@ -203,10 +205,10 @@ public class MasterModel
     }
   }
 
-  private void setBookingItems(ArrayList<Booking> query){
+  private void setBookingItems(ArrayList<Booking> query, ArrayList<String> names){
     this.bookingItems = new ArrayList<>();
     for (int i = 0; i < query.size(); i++){
-      BookingItem item = new BookingItem(query.get(i));
+      BookingItem item = new BookingItem(query.get(i),names.get(i));
       bookingItems.add(item);
     }
   }
