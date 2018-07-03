@@ -106,6 +106,7 @@ public class MediatorApp extends Application implements Mediator.Lifecycle, Medi
       Log.d(TAG, "calling resumingMasterScreen()");
       Log.d(TAG, "calling restoringUpdatedMasterState()");
       presenter.setItemToDelete(detailToMasterState.itemToDelete);
+      Log.d(TAG, "resumingMasterScreen: itemToDelete" + detailToMasterState.itemToDelete.getContent());
 
       Log.d(TAG, "calling removingUpdatedMasterState()");
       detailToMasterState = null;

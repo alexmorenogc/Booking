@@ -197,8 +197,8 @@ public class MasterPresenter extends GenericPresenter
     }
 
     if (getModel().isBookingListReady()){
-      //hideProgress = false;
-      //checkVisibility();
+      hideProgress = false;
+      checkVisibility();
       getModel().onShopClickedLoadBookings(selectedItem.getShopId());
     }
   }

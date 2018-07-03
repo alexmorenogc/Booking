@@ -92,8 +92,8 @@ public class MasterModel
 
   @Override
   public void deleteItem(Item item) {
-    if (items.contains(item)){
-      items.remove(item);
+    if (bookingItems.contains(item)){
+      bookingItems.remove(item);
       if (item instanceof BookingItem){
         BookingItem itemToDelete = (BookingItem) item;
         connection.child("bookings").child(itemToDelete.getIdFirebase()).removeValue();
@@ -178,8 +178,8 @@ public class MasterModel
 
   private List<Item> emptyBookingList() {
     ArrayList<Item> emptyList = new ArrayList<>();
-    Booking empty = new Booking(-1,"No hay reservas","","","",-1,-1);
-    BookingItem emptyItem = new BookingItem(empty,"vacio");
+    Booking empty = new Booking(-1,"No hay reservas","-","-","-",-1,-1);
+    BookingItem emptyItem = new BookingItem(empty,"-");
     emptyList.add(emptyItem);
     return emptyList;
   }
