@@ -18,6 +18,7 @@ public interface Master {
   interface ToMaster {
     void onScreenStarted();
     void setToolbarVisibility(boolean visible);
+    void setUsername(String username);
   }
 
   /**
@@ -28,6 +29,7 @@ public interface Master {
     Context getManagedContext();
     Item getSelectedItem();
     boolean getToolbarVisibility();
+    String getUsername();
   }
 
   /**
@@ -37,6 +39,7 @@ public interface Master {
   interface DetailToMaster {
     void onScreenResumed();
     void setItemToDelete(Item item);
+    void setUsername(String username);
   }
 
 

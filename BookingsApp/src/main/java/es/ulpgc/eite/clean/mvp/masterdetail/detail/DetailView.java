@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import es.ulpgc.eite.clean.mvp.GenericActivity;
@@ -33,6 +34,7 @@ public class DetailView
   private Toolbar toolbar;
   private CollapsingToolbarLayout toolbarLayout;
   private AppBarLayout appbarLayout;
+  private Button logout;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,13 @@ public class DetailView
     toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
     appbarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
     appbarLayout.setExpanded(true);
+    logout = (Button) findViewById(R.id.logout);
+    logout.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        getPresenter().onLogoutClicked();
+      }
+    });
   }
 
   /**

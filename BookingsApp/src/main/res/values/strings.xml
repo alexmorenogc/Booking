@@ -5,4 +5,9 @@
     <string name="title_item_list">Booking List</string>
     <string name="action_delete">Delete</string>
     <string name="action_restore">Refresh</string>
+    <!-- login -->
+    <string name="screen_text">Username:</string>
+    <string name="button_label">Login</string>
+    <string name="logout">Logout</string>
+
 </resources>

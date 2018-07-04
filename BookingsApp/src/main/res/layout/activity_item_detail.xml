@@ -42,9 +42,21 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!--<include layout="@layout/content_item_detail"/>-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            <Button
+                android:id="@+id/logout"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="@string/logout" />
+
+
+            <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:tools="http://schemas.android.com/tools"
                   android:id="@+id/item_detail"
                   style="?android:attr/textAppearanceLarge"
@@ -52,6 +64,7 @@
                   android:layout_height="match_parent"
                   android:padding="16dp"
                   android:textIsSelectable="true"/>
+        </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 

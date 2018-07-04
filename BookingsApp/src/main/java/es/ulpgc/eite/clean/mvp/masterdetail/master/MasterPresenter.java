@@ -26,6 +26,7 @@ public class MasterPresenter extends GenericPresenter
   private Item selectedItem;
   private Item itemToDelete;
   private boolean hideProgress;
+  private String username;
 
   /**
    * Operation called during VIEW creation in {@link GenericActivity#onResume(Class, Object)}
@@ -131,6 +132,11 @@ public class MasterPresenter extends GenericPresenter
     return !hideToolbar;
   }
 
+  @Override
+  public String getUsername() {
+    return username;
+  }
+
   /////////////////////////////////////////////////////////////////////////////////////
   // Model To Presenter //////////////////////////////////////////////////////////////
 
@@ -170,6 +176,7 @@ public class MasterPresenter extends GenericPresenter
   public void onLoadItemsTaskStarted() {
     Log.d(TAG, "calling onLoadItemsTaskStarted()");
 
+    Log.d(TAG, "onLoadItemsTaskStarted: username:" + username);
     hideProgress = false;
     checkVisibility();
   }
@@ -237,6 +244,11 @@ public class MasterPresenter extends GenericPresenter
   @Override
   public void setToolbarVisibility(boolean visible) {
     hideToolbar = !visible;
+  }
+
+  @Override
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   /////////////////////////////////////////////////////////////////////////////////////

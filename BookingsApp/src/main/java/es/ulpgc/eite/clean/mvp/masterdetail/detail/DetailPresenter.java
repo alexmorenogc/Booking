@@ -1,6 +1,7 @@
 package es.ulpgc.eite.clean.mvp.masterdetail.detail;
 
 
+import android.content.Context;
 import android.util.Log;
 
 import es.ulpgc.eite.clean.mvp.ContextView;
@@ -8,13 +9,14 @@ import es.ulpgc.eite.clean.mvp.GenericActivity;
 import es.ulpgc.eite.clean.mvp.GenericPresenter;
 import es.ulpgc.eite.clean.mvp.masterdetail.data.Item;
 import es.ulpgc.eite.clean.mvp.masterdetail.app.Mediator;
+import es.ulpgc.eite.clean.mvp.masterdetail.login.Login;
 
 public class DetailPresenter extends GenericPresenter
       <Detail.PresenterToView, Detail.PresenterToModel, Detail.ModelToPresenter, DetailModel>
     implements Detail.ViewToPresenter, Detail.ModelToPresenter,
-      Detail.MasterToDetail, Detail.DetailToMaster {
+      Detail.MasterToDetail, Detail.DetailToMaster, Login.ToLogin {
 
-
+  private String username;
   private boolean hideToolbar;
 
   /**
@@ -114,6 +116,16 @@ public class DetailPresenter extends GenericPresenter
     mediator.backToMasterScreen(this);
   }
 
+  @Override
+  public void onLogoutClicked() {
+    Log.d(TAG, "calling onLogoutClicked()");
+
+
+    Log.d(TAG, "calling backToLoginScreen()");
+    Mediator.Navigation mediator = (Mediator.Navigation) getView().getApplication();
+    mediator.backToLoginScreen(this);
+  }
+
 
   /////////////////////////////////////////////////////////////////////////////////////
   // Master To Detail ////////////////////////////////////////////////////////////////
@@ -127,6 +139,7 @@ public class DetailPresenter extends GenericPresenter
   public void onScreenStarted() {
     Log.d(TAG, "calling onScreenStarted()");
 
+    Log.d(TAG, "onScreenStartedDETAIL: username:" + username);
     checkVisibility();
   }
 
@@ -141,8 +154,18 @@ public class DetailPresenter extends GenericPresenter
   }
 
   @Override
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  @Override
   public void setToolbarVisibility(boolean visible) {
     hideToolbar = !visible;
+  }
+
+  @Override
+  public void setTextVisibility(boolean visible) {
+
   }
 
 
@@ -167,6 +190,16 @@ public class DetailPresenter extends GenericPresenter
   @Override
   public Item getItemToDelete() {
     return getModel().getItem();
+  }
+
+  @Override
+  public String getUsername() {
+    return this.username;
+  }
+
+  @Override
+  public Context getManagedContext() {
+    return getActivityContext();
   }
 
 

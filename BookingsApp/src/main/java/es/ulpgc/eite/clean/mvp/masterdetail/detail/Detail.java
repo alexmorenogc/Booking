@@ -15,6 +15,7 @@ public interface Detail {
     void onScreenStarted();
     void setToolbarVisibility(boolean visible);
     void setItem(Item item);
+    void setUsername(String username);
   }
 
   /**
@@ -25,6 +26,7 @@ public interface Detail {
   interface DetailToMaster {
     void destroyView();
     Item getItemToDelete();
+    String getUsername();
   }
 
   /////////////////////////////////////////////////////////////////////////////////////
@@ -36,6 +38,7 @@ public interface Detail {
   interface ViewToPresenter extends Presenter<PresenterToView> {
     Item getItem();
     void onDeleteActionClicked();
+    void onLogoutClicked();
   }
 
   /**

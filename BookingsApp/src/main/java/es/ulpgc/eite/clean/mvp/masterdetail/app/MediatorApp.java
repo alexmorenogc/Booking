@@ -8,7 +8,10 @@ import android.util.Log;
 import es.ulpgc.eite.clean.mvp.masterdetail.data.Item;
 import es.ulpgc.eite.clean.mvp.masterdetail.detail.Detail;
 import es.ulpgc.eite.clean.mvp.masterdetail.detail.DetailView;
+import es.ulpgc.eite.clean.mvp.masterdetail.login.Login;
+import es.ulpgc.eite.clean.mvp.masterdetail.login.LoginView;
 import es.ulpgc.eite.clean.mvp.masterdetail.master.Master;
+import es.ulpgc.eite.clean.mvp.masterdetail.master.MasterView;
 
 
 public class MediatorApp extends Application implements Mediator.Lifecycle, Mediator.Navigation {
@@ -18,6 +21,7 @@ public class MediatorApp extends Application implements Mediator.Lifecycle, Medi
   private MasterState toMasterState;
   private DetailState masterToDetailState;
   private ListState detailToMasterState;
+  private LoginState toLoginState;
 
   /**
    * Fija el estado inicial de la app al arrancar
@@ -27,9 +31,13 @@ public class MediatorApp extends Application implements Mediator.Lifecycle, Medi
     super.onCreate();
     Log.d(TAG, "calling onCreate()");
 
-    Log.d(TAG, "calling creatingInitialMasterState()");
-    toMasterState = new MasterState();
-    toMasterState.hideToolbar = false;
+    //Log.d(TAG, "calling creatingInitialLoginState()");
+    //toLoginState = new LoginState();
+    //toLoginState.username = null;
+
+    //Log.d(TAG, "calling creatingInitialMasterState()");
+    //toMasterState = new MasterState();
+    //toMasterState.hideToolbar = false;
   }
 
   /////////////////////////////////////////////////////////////////////////////////////
@@ -45,6 +53,7 @@ public class MediatorApp extends Application implements Mediator.Lifecycle, Medi
     if(toMasterState != null) {
       Log.d(TAG, "calling settingInitialMasterState()");
       presenter.setToolbarVisibility(!toMasterState.hideToolbar);
+      presenter.setUsername(toMasterState.username);
     }
 
     // Una vez fijado el estado inicial, el maestro puede iniciarse normalmente
@@ -63,6 +72,7 @@ public class MediatorApp extends Application implements Mediator.Lifecycle, Medi
     masterToDetailState = new DetailState();
     masterToDetailState.hideToolbar = !presenter.getToolbarVisibility();
     masterToDetailState.selectedItem = presenter.getSelectedItem();
+    masterToDetailState.username = presenter.getUsername();
 
     // Arrancamos la pantalla del detalle sin finalizar la del maestro
     Context view = presenter.getManagedContext();
@@ -71,6 +81,45 @@ public class MediatorApp extends Application implements Mediator.Lifecycle, Medi
       view.startActivity(new Intent(view, DetailView.class));
     }
 
+  }
+
+  @Override
+  public void backToLoginScreen(Login.ToLogin presenter) {
+    Log.d(TAG, "saving LoginState()");
+    toLoginState = new LoginState();
+    toLoginState.username = presenter.getUsername();
+
+    Context view = presenter.getManagedContext();
+    if (view != null) {
+      Log.d(TAG, "calling startingLoginScreen()");
+      Intent intent = new Intent(view, LoginView.class);
+      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+      view.startActivity(intent);
+
+      Log.d(TAG, "calling destroyView()");
+      //presenter.destroyView();
+    }
+  }
+
+  @Override
+  public void goToNextScreen(Login.LoginTo presenter) {
+    Log.d(TAG, "saving LoginState()");
+    toLoginState = new LoginState();
+    toLoginState.username = presenter.getUsername();
+
+
+    Log.d(TAG, "calling creatingInitialMasterState()");
+    toMasterState = new MasterState();
+    toMasterState.hideToolbar = false;
+    toMasterState.username = presenter.getUsername();
+
+    Context view = presenter.getManagedContext();
+    if (view != null) {
+      Log.d(TAG, "calling startingMasterScreen()");
+      view.startActivity(new Intent(view, MasterView.class));
+      Log.d(TAG, "calling destroyView()");
+      presenter.destroyView();
+    }
   }
 
   /**
@@ -84,6 +133,7 @@ public class MediatorApp extends Application implements Mediator.Lifecycle, Medi
     Log.d(TAG, "calling savingUpdatedMasterState()");
     detailToMasterState = new ListState();
     detailToMasterState.itemToDelete = presenter.getItemToDelete();
+    detailToMasterState.username = presenter.getUsername();
 
     // Al volver al maestro, el detalle debe finalizar
     Log.d(TAG, "calling finishingDetailScreen()");
@@ -108,6 +158,7 @@ public class MediatorApp extends Application implements Mediator.Lifecycle, Medi
       // Sólo se borra si no es un objeto metido para relleno
       if (detailToMasterState.itemToDelete.getShopId() != -1){
         presenter.setItemToDelete(detailToMasterState.itemToDelete);
+        presenter.setUsername(detailToMasterState.username);
       }
 
       Log.d(TAG, "calling removingUpdatedMasterState()");
@@ -130,6 +181,7 @@ public class MediatorApp extends Application implements Mediator.Lifecycle, Medi
       Log.d(TAG, "calling settingInitialDetailState()");
       presenter.setToolbarVisibility(!masterToDetailState.hideToolbar);
       presenter.setItem(masterToDetailState.selectedItem);
+      presenter.setUsername(masterToDetailState.username);
 
       Log.d(TAG, "calling removingInitialDetailState()");
       masterToDetailState = null;
@@ -137,6 +189,23 @@ public class MediatorApp extends Application implements Mediator.Lifecycle, Medi
 
     // Una vez fijado el estado inicial, el detalle puede iniciarse normalmente
     presenter.onScreenStarted();
+  }
+
+  @Override
+  public void startingLoginScreen(Login.ToLogin presenter) {
+    if (toLoginState != null) {
+      Log.d(TAG, "calling settingLoginState()");
+      presenter.setUsername(toLoginState.username);
+
+      Log.d(TAG, "calling removingInitialLoginState()");
+      toLoginState = null;
+    }
+    presenter.onScreenStarted();
+  }
+
+  @Override
+  public void resumingLoginScreen(Login.LoginTo presenter) {
+    presenter.onScreenResumed();
   }
 
 
@@ -148,6 +217,7 @@ public class MediatorApp extends Application implements Mediator.Lifecycle, Medi
    */
   private class ListState {
     Item itemToDelete;
+    String username;
   }
 
   /**
@@ -156,6 +226,7 @@ public class MediatorApp extends Application implements Mediator.Lifecycle, Medi
   private class DetailState {
     boolean hideToolbar;
     Item selectedItem;
+    String username;
   }
 
   /**
@@ -163,6 +234,13 @@ public class MediatorApp extends Application implements Mediator.Lifecycle, Medi
    */
   private class MasterState {
     boolean hideToolbar;
+    String username;
   }
 
+  /**
+   * Estado del Login
+   */
+  private class LoginState {
+    String username;
+  }
 }
